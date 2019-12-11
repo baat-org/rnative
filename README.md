@@ -17,7 +17,12 @@ npm install -S react-scripts react-dom react-native-web react-art react-router-n
 Run Server and Package manager locally and point to the local QR code from device (Expo App).
 
 ```
-npm start
+npm run start
+```
+
+For Web:
+```
+npm run start-web
 ```
 
 ## Publish
