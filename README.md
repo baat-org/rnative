@@ -34,3 +34,8 @@ These builds have expo URLs for JS bundle part of them (e.g. https://exp.host/@s
 ```
 expo build:android -t apk
 ```
+
+For web:
+```
+expo build:web
+```
