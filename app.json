@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "baat-org-rnative",
+    "name": "baat",
     "slug": "baat-org-rnative",
     "privacy": "public",
-    "sdkVersion": "35.0.0",
+    "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
       "android",
@@ -24,11 +24,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "org.baat.rnative"
-    },
-    "android": {
-      "package": "org.baat.rnative"
+      "supportsTablet": true
     }
   }
 }

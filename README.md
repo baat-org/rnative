@@ -8,21 +8,16 @@ Must Install Node 10 LTS & Expo
 npm install -g expo-cli
 ```
 
-To make project hybrid
-```
-npm install -S react-scripts react-dom react-native-web react-art react-router-native react-router-dom
-```
-
 ## Run Server Locally
 Run Server and Package manager locally and point to the local QR code from device (Expo App).
 
 ```
-npm run start
+expo start
 ```
 
 For Web:
 ```
-npm run start-web
+expo start --web
 ```
 
 ## Publish
