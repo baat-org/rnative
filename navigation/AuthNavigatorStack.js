@@ -1,10 +1,10 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import { createStackNavigator } from 'react-navigation-stack';
+import LoginScreen from '../screens/LoginScreen'
+import SignupScreen from '../screens/SignupScreen'
 
-export default function AuthNavigatorStack() {
-  return (
-    <View>
-        <Text>AuthNavigatorStack</Text>
-    </View>
-  );
-}
+export default createStackNavigator(
+    {
+        Login: LoginScreen,
+        Signup: SignupScreen
+    }
+);

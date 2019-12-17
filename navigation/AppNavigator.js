@@ -6,9 +6,14 @@ import HomeNavigatorStack from './HomeNavigatorStack';
 import AuthNavigatorStack from './AuthNavigatorStack';
 
 export default createAppContainer(
-  createSwitchNavigator({
-    CheckAuth: CheckAuthScreen,
-    Home: HomeNavigatorStack,
-    Auth: AuthNavigatorStack,
-  })
+    createSwitchNavigator(
+        {
+            CheckAuth: CheckAuthScreen,
+            Home: HomeNavigatorStack,
+            Auth: AuthNavigatorStack,
+        },
+        {
+            initialRouteName: 'CheckAuth',
+        }
+    )
 );

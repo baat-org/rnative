@@ -1,10 +1,30 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import {
+    ActivityIndicator,
+    AsyncStorage,
+    StatusBar,
+    View,
+} from 'react-native';
 
-export default function CheckAuthScreen() {
-  return (
-    <View>
-        <Text>CheckAuthScreen</Text>
-    </View>
-  );
+class CheckAuthScreen extends React.Component {
+    componentDidMount() {
+        this._bootstrapAsync();
+    }
+
+    _bootstrapAsync = async () => {
+        const userToken = await AsyncStorage.getItem('userToken');
+
+        this.props.navigation.navigate(userToken ? 'Home' : 'Auth');
+    };
+
+    // Render any loading content that you like here
+    render() {
+        return (
+            <View>
+                <ActivityIndicator />
+                <StatusBar barStyle="default" />
+            </View>
+        );
+    }
 }
+export default CheckAuthScreen
