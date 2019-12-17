@@ -2,10 +2,6 @@ import React from 'react';
 import { Button, View } from 'react-native';
 
 class ChatScreen extends React.Component {
-  componentDidMount() {
-    this.props.navigation.openDrawer();
-  }
-
   static navigationOptions = {
     drawerLabel: 'Chat',
   };
@@ -19,6 +15,7 @@ class ChatScreen extends React.Component {
       </View>
     );
   }
+
 }
 
 export default ChatScreen
