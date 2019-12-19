@@ -5,6 +5,7 @@ class MembersScreen extends React.Component {
   static navigationOptions = {
     drawerLabel: 'Members',
   };
+  
   render() {
     return (
       <View>

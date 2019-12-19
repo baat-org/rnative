@@ -15,7 +15,6 @@ class ChatScreen extends React.Component {
       </View>
     );
   }
-
 }
 
 export default ChatScreen
