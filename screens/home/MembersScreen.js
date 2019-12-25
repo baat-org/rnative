@@ -4,10 +4,6 @@ import { SafeAreaView } from 'react-navigation';
 import GlobalStyles from '../../GlobalStyles'
 
 class MembersScreen extends React.Component {
-  static navigationOptions = {
-    drawerLabel: 'Members',
-  };
-
   render() {
     return (
       <SafeAreaView style={GlobalStyles.safeArea}>
