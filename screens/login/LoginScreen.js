@@ -57,12 +57,19 @@ class LoginScreen extends React.Component {
           secureTextEntry={true}
           style={styles.input}
         />
-
-        <Button
-          title={'Login'}
-          style={styles.input}
-          onPress={this.onLogin.bind(this)}
-        />
+        <View style={styles.row}>
+          <Button
+            title={'Login'}
+            style={styles.button}
+            onPress={this.onLogin.bind(this)}
+          />
+          <Text>  </Text>
+          <Button
+            title={'Signup'}
+            style={styles.button}
+            onPress={() => this.props.navigation.navigate('Signup')}
+          />
+        </View>
       </View>
     );
   }
@@ -80,6 +87,15 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderColor: 'black',
+    marginBottom: 10,
+  },
+  row: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap"
+  },
+  button: {
+    padding: 10,
     marginBottom: 10,
   },
   error: {
