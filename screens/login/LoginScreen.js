@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Button, AsyncStorage, Text, TextInput } from 'react-native';
+import { View, Button, AsyncStorage, Text, TextInput } from 'react-native';
+import GlobalStyles from '../../GlobalStyles'
 import { GQL_API_URI } from 'react-native-dotenv';
 
 class LoginScreen extends React.Component {
@@ -42,31 +43,31 @@ class LoginScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.error}>{this.state.errorMessage}</Text>
+      <View style={GlobalStyles.container}>
+        <Text style={GlobalStyles.error}>{this.state.errorMessage}</Text>
         <TextInput
           value={this.state.userName}
           onChangeText={(userName) => this.setState({ userName })}
           placeholder={'Username'}
-          style={styles.input}
+          style={GlobalStyles.input}
         />
         <TextInput
           value={this.state.password}
           onChangeText={(password) => this.setState({ password })}
           placeholder={'Password'}
           secureTextEntry={true}
-          style={styles.input}
+          style={GlobalStyles.input}
         />
-        <View style={styles.row}>
+        <View style={GlobalStyles.row}>
           <Button
             title={'Login'}
-            style={styles.button}
+            style={GlobalStyles.button}
             onPress={this.onLogin.bind(this)}
           />
           <Text>  </Text>
           <Button
             title={'Signup'}
-            style={styles.button}
+            style={GlobalStyles.button}
             onPress={() => this.props.navigation.navigate('Signup')}
           />
         </View>
@@ -74,35 +75,5 @@ class LoginScreen extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  input: {
-    width: 200,
-    height: 44,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: 'black',
-    marginBottom: 10,
-  },
-  row: {
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap"
-  },
-  button: {
-    padding: 10,
-    marginBottom: 10,
-  },
-  error: {
-    padding: 10,
-    color: 'red',
-    marginBottom: 10,
-  },
-});
 
 export default LoginScreen
