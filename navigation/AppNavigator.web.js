@@ -7,7 +7,7 @@ import CheckAuthScreen from '../screens/login/CheckAuthScreen';
 import LoginScreen from '../screens/login/LoginScreen'
 import SignupScreen from '../screens/login/SignupScreen'
 import ChatScreen from '../screens/home/ChatScreen'
-import MembersScreen from '../screens/home/MembersScreen'
+import SideMenuScreen from '../screens/home/SideMenuScreen'
 
 const AuthNavigatorStack = createStackNavigator(
   {
@@ -18,8 +18,10 @@ const AuthNavigatorStack = createStackNavigator(
 
 const HomeDrawerNavigator = createDrawerNavigator(
   {
-    Chat: ChatScreen,
-    Members: MembersScreen
+    Chat: ChatScreen
+  },
+  {
+    contentComponent: SideMenuScreen
   }
 );
 
