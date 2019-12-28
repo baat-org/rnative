@@ -3,7 +3,7 @@ import { View, Button } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import GlobalStyles from '../../GlobalStyles'
 
-class MembersScreen extends React.Component {
+class SideMenuScreen extends React.Component {
   render() {
     return (
       <SafeAreaView style={GlobalStyles.safeArea}>
@@ -25,4 +25,4 @@ class MembersScreen extends React.Component {
 
 }
 
-export default MembersScreen
+export default SideMenuScreen
