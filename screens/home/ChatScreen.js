@@ -5,14 +5,12 @@ import GlobalStyles from '../../GlobalStyles'
 
 class ChatScreen extends React.Component {
   render() {
+    this.props.navigation.closeDrawer();
+    
     return (
       <SafeAreaView style={GlobalStyles.safeArea}>
         <Button
-          onPress={() => this.props.navigation.toggleDrawer({
-            side: 'right',
-            animated: true,
-            to: 'closed',
-          })}
+          onPress={() => this.props.navigation.toggleDrawer()}
           title="Show Users"
         />
         <View>
