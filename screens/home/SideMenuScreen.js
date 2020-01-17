@@ -50,7 +50,7 @@ class SideMenuScreen extends React.Component {
     const recpientPanels = this.state.recipientUsers.map((recipientUser, key) =>
       <ListItem
         key={key}
-        onPress={() => this.props.navigation.navigate('Chat', { recipientUserId: recipientUser.id, reciepientFullName: recipientUser.fullName })}
+        onPress={() => this.props.navigation.navigate('Home', { recipientUserId: recipientUser.id, reciepientFullName: recipientUser.fullName })}
         title={recipientUser.fullName}
         bottomDivider
       />

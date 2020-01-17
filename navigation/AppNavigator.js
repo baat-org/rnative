@@ -5,7 +5,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import CheckAuthScreen from '../screens/login/CheckAuthScreen';
 import LoginScreen from '../screens/login/LoginScreen'
 import SignupScreen from '../screens/login/SignupScreen'
-import ChatScreen from '../screens/home/ChatScreen'
+import HomeScreen from '../screens/home/HomeScreen'
 import SideMenuScreen from '../screens/home/SideMenuScreen'
 
 
@@ -18,7 +18,7 @@ const AuthNavigatorStack = createStackNavigator(
 
 const HomeDrawerNavigator = createDrawerNavigator(
     {
-        Chat: ChatScreen
+        Home: HomeScreen
     },
     {
         contentComponent: SideMenuScreen
