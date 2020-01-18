@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Button, AsyncStorage, Text, TextInput } from 'react-native';
 import GlobalStyles from '../../GlobalStyles'
-import { GQL_API_URI } from 'react-native-dotenv';
+import API from '../../api/API';
 
 class SingupScreen extends React.Component {
   constructor(props) {
@@ -18,27 +18,14 @@ class SingupScreen extends React.Component {
   onSignup() {
     const { email, name, password } = this.state;
 
-    fetch(GQL_API_URI,
-      {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: '{"query": "mutation { signup ( email: \\\"' + email + '\\\", name: \\\"' + name + '\\\", password: \\\"' + password + '\\\", avatarUrl: \\\"\\\")}", "variables": null}',
-      })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        if (responseJson && responseJson.data && responseJson.data.signup) {
-          AsyncStorage.setItem('userToken', responseJson.data.signup);
-          this.props.navigation.navigate('Home');
-        } else if (responseJson && responseJson.errors && responseJson.errors.length > 0) {
-          this.setState({ errorMessage: responseJson.errors[0].message });
-        }
-      })
-      .catch((error) => {
+    API.signup(email, name, password,
+      (userToken) => {
+        AsyncStorage.setItem('userToken', userToken);
+        this.props.navigation.navigate('Home');
+      },
+      (error) => {
         this.setState({ errorMessage: error });
-      });
+      })
   }
 
 

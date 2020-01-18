@@ -27,6 +27,78 @@ class API {
 
         return users;
     }
+
+    static authorize = async (userToken, successCallBack, failureCallBack) => {
+        fetch(GQL_API_URI,
+            {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: '{"query": "mutation { validateUserToken ( userToken: \\\"' + userToken + '\\\")}", "variables": null}',
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson && responseJson.data && responseJson.data.validateUserToken) {
+                    successCallBack(responseJson.data.validateUserToken);
+                } else {
+                    failureCallBack();
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                failureCallBack();
+            });
+    }
+
+
+    static login = async (userName, password, successCallBack, failureCallBack) => {
+        fetch(GQL_API_URI,
+            {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: '{"query": "mutation { authenticate ( userName: \\\"' + userName + '\\\", password: \\\"' + password + '\\\")}", "variables": null}',
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson && responseJson.data && responseJson.data.authenticate) {
+                    successCallBack(responseJson.data.authenticate);
+                } else if (responseJson && responseJson.errors && responseJson.errors.length > 0) {
+                    failureCallBack(responseJson.errors[0].message);
+                }
+            })
+            .catch((error) => {
+                failureCallBack(error);
+            });
+    }
+
+    static signup = async (email, name, successCallBack, failureCallBack) => {
+        fetch(GQL_API_URI,
+            {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: '{"query": "mutation { signup ( email: \\\"' + email + '\\\", name: \\\"' + name + '\\\", password: \\\"' + password + '\\\", avatarUrl: \\\"\\\")}", "variables": null}',
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson && responseJson.data && responseJson.data.signup) {
+                    successCallBack(responseJson.data.signup);
+                } else if (responseJson && responseJson.errors && responseJson.errors.length > 0) {
+                    failureCallBack(responseJson.errors[0].message);
+                }
+            })
+            .catch((error) => {
+                failureCallBack(error);
+            });
+    }
+
 }
 
 export default API
