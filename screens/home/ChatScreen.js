@@ -5,17 +5,17 @@ class ChatScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      recipientUserId: props.recipientUserId,
+      userId: props.userId,
     }
   };
 
   render() {
-    const recipientUserId = this.props.recipientUserId;
+    const userId = this.props.userId;
 
     return (
       <Fragment>
         <ScrollView>
-          <Text>Chat screen for {recipientUserId}</Text>
+          <Text>Chat screen for {userId}</Text>
         </ScrollView>
         <TextInput multiline={true} numberOfLines={4} placeholder="Message" />
       </Fragment>
