@@ -5,6 +5,7 @@ import GlobalStyles from '../../GlobalStyles';
 import { KeyboardAvoidingView } from 'react-native';
 import ChatScreen from './ChatScreen';
 import API from '../../api/API';
+import { WEBSOCKETS_URI } from 'react-native-dotenv';
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -19,10 +20,37 @@ class HomeScreen extends React.Component {
   componentDidMount() {
     API.fetchAllUsers().then(users => {
       for (let i = 0; i < users.length; i++) {
-        let user = users[i];
-        this.chatScreens[user.id] = <ChatScreen userId={user.id} />;
+        this.chatScreens[users[i].id] = <ChatScreen />;
       }
     });
+    this._createWebSocket();
+  }
+
+  _createWebSocket = async () => {
+    const ws = new WebSocket(WEBSOCKETS_URI);
+    const userToken = await AsyncStorage.getItem('userToken');
+
+    ws.onmessage = function (event) {
+      const replyMessage = JSON.parse(event.data),
+            senderUserId = replyMessage.senderUserId,
+            textMessage = replyMessage.textMessage;
+      
+      if (senderUserId && textMessage && this.chatScreens && this.chatScreens[senderUserId]) {
+        const senderChatScreen = this.chatScreens[senderUserId];
+        const message = {senderUserId: senderUserId, textMessage: textMessage};
+        senderChatScreen.appendMessage(message);
+      }
+    };
+
+    ws.onclose = function () {
+      console.log("Socket closed");
+    };
+
+    ws.onopen = function () {
+      // TODO may want to do it as part of Connect
+      ws.send(userToken);
+      console.log("Connected");
+    };
   }
 
   _signOut() {
