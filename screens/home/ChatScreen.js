@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
-import { ScrollView, Text, TextInput } from 'react-native';
+import { ScrollView, Text, TextInput, View, Button} from 'react-native';
+import GlobalStyles from '../../GlobalStyles';
 
 class ChatScreen extends React.Component {
   constructor(props) {
@@ -15,9 +16,12 @@ class ChatScreen extends React.Component {
     return (
       <Fragment>
         <ScrollView>
-          <Text>Chat screen for {userId}</Text>
+          <Text>   Chat screen for {userId}   </Text>
         </ScrollView>
-        <TextInput multiline={true} numberOfLines={4} placeholder="Message" />
+        <View style={GlobalStyles.chatInputContainer}>
+            <TextInput multiline={true} numberOfLines={4} placeholder="Message" style={GlobalStyles.chatInput} />
+            <Button title="Send"/>
+        </View>
       </Fragment>
     );
   }

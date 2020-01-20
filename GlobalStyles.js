@@ -31,4 +31,17 @@ export default StyleSheet.create({
         color: 'red',
         marginBottom: 10,
     },
+    chatInputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        paddingBottom: 10,
+    },
+    chatInput: {
+        height: 40,
+        width: '80%',
+        borderWidth: 1,
+        paddingHorizontal: 10,
+        borderRadius: 3
+    }
 });

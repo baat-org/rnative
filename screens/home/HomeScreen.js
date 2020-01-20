@@ -35,7 +35,7 @@ class HomeScreen extends React.Component {
 
     const userId = this.props.navigation.getParam('userId');
     const fullName = this.props.navigation.getParam('fullName');
-    const chatScreen = userId && this.chatScreens && this.chatScreens[userId] ? this.chatScreens[userId] : <Text>Please select user from side menu.</Text>;
+    const chatScreen = userId && this.chatScreens && this.chatScreens[userId] ? this.chatScreens[userId] : <Text>   Please select user from side menu.   </Text>;
 
     return (
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
