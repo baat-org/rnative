@@ -99,6 +99,32 @@ class API {
             });
     }
 
+
+    static chat = async (recipientUserId, textMessage, successCallBack, failureCallBack) => {
+        const userToken = await AsyncStorage.getItem('userToken');
+
+        fetch(GQL_API_URI,
+            {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: '{"query": "mutation { chat ( senderUserToken: \\\"' + userToken + '\\\", recipientUserId: ' + recipientUserId + ', textMessage: \\\"' + textMessage + '\\\")}", "variables": null}',
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson && responseJson.data && responseJson.data.chat) {
+                    successCallBack(responseJson.data.chat);
+                } else if (responseJson && responseJson.errors && responseJson.errors.length > 0) {
+                    failureCallBack(responseJson.errors[0].message);
+                }
+            })
+            .catch((error) => {
+                failureCallBack(error);
+            });
+    }
+
 }
 
 export default API

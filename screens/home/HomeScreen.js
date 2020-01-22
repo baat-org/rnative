@@ -20,7 +20,7 @@ class HomeScreen extends React.Component {
   componentDidMount() {
     API.fetchAllUsers().then(users => {
       for (let i = 0; i < users.length; i++) {
-        this.chatScreens[users[i].id] = <ChatScreen />;
+        this.chatScreens[users[i].id] = <ChatScreen userId={users[i].id}/>;
       }
     });
     this._createWebSocket();
