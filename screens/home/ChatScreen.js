@@ -27,7 +27,10 @@ class ChatScreen extends React.Component {
         <Fragment>
           <ScrollView>
             {this.props.messages.map((message, key) =>
-              <Text>From: {message.fromUser.fullName}, Message: {message.textMessage}</Text>
+              <View style={GlobalStyles.chatMessageContainer} key={key}>
+                <Text style={GlobalStyles.chatMessageFrom}>{message.fromUser.fullName}:</Text>
+                <Text>{message.textMessage}</Text>
+              </View>
             )}
           </ScrollView>
           <View style={GlobalStyles.chatInputContainer}>

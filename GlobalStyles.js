@@ -43,5 +43,13 @@ export default StyleSheet.create({
         borderWidth: 1,
         paddingHorizontal: 10,
         borderRadius: 3
+    },
+    chatMessageContainer: {
+        width: '70%', 
+        paddingBottom: 3, 
+        paddingLeft: 20
+    },
+    chatMessageFrom: {
+        fontWeight: 'bold'
     }
 });
