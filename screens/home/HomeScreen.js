@@ -99,7 +99,11 @@ class HomeScreen extends React.Component {
     this.props.navigation.closeDrawer();
 
     const userId = this.props.navigation.getParam('userId');
-    const headerMessage = 'Hi ' + this.state.currentUser.fullName + ', Chat with ' + this.props.navigation.getParam('fullName');
+    let headerMessage = 'Welcome ' + this.state.currentUser.fullName + '!';
+    if (this.props.navigation.getParam('fullName')) {
+      headerMessage += ' Chat with ' + this.props.navigation.getParam('fullName');
+    }
+
 
     return (
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
