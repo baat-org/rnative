@@ -13,36 +13,35 @@ class ChatScreen extends React.Component {
     }
   };
 
-  appendMessage(message) {
-    const messages = this.state.messages;
-    messages.append(message);
-    this.setState({ messages });
-  };
-
   onSend() {
     const { userId, messageToSend } = this.state;
-    API.chat(userId, messageToSend, () => {}, ()=> {});
+    API.chat(userId, messageToSend, () => { }, () => { });
+    this.setState({ messageToSend: '' });
   };
 
   render() {
-    const messages = this.state.messages.map((message, key) =>
-      <Text>From: {message.senderUserId}, Message: {message.textMessage}</Text>
-    );
-
-    return (
-      <Fragment>
-        <ScrollView>
-          {messages}
-        </ScrollView>
-        <View style={GlobalStyles.chatInputContainer}>
-          <TextInput multiline={true} numberOfLines={4}
-            placeholder="Message"
-            style={GlobalStyles.chatInput}
-            onChangeText={(messageToSend) => this.setState({ messageToSend })} />
-          <Button title="Send" onPress={this.onSend.bind(this)} />
-        </View>
-      </Fragment>
-    );
+    console.log("chat screen", this.props, this.state)
+    if (this.props.show) {
+      return (
+        <Fragment>
+          <ScrollView>
+            {this.state.messages.map((message, key) =>
+              <Text>From: {message.senderUserId}, Message: {message.textMessage}</Text>
+            )}
+          </ScrollView>
+          <View style={GlobalStyles.chatInputContainer}>
+            <TextInput multiline={true} numberOfLines={4}
+              placeholder="Message"
+              style={GlobalStyles.chatInput}
+              value={this.state.messageToSend}
+              onChangeText={(messageToSend) => this.setState({ messageToSend })} />
+            <Button title="Send" onPress={this.onSend.bind(this)} />
+          </View>
+        </Fragment>
+      );
+    } else {
+      return null;
+    }
   }
 }
 
