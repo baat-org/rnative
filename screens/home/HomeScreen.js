@@ -61,7 +61,6 @@ class HomeScreen extends React.Component {
   }
 
   render() {
-    console.log("home screen", this.props, this.state)
     this.props.navigation.closeDrawer();
 
     const userId = this.props.navigation.getParam('userId');

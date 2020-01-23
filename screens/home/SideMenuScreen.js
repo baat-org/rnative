@@ -48,7 +48,6 @@ class SideMenuScreen extends React.Component {
   }
 
   render() {
-    console.log("side screen", this.props, this.state)
     return (
       <SafeAreaView style={GlobalStyles.safeArea}>
         {this.state.users.map((user, key) =>

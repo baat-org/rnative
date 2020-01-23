@@ -20,7 +20,6 @@ class ChatScreen extends React.Component {
   };
 
   render() {
-    console.log("chat screen", this.props, this.state)
     if (this.props.show) {
       return (
         <Fragment>
