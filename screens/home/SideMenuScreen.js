@@ -26,13 +26,14 @@ class SideMenuScreen extends React.Component {
   _createWebSocket = async () => {
     const ws = new WebSocket(WEBSOCKETS_URI);
     const userToken = await AsyncStorage.getItem('userToken');
+    const that = this;
 
     ws.onmessage = function (event) {
       const replyMessage = JSON.parse(event.data),
         senderUserId = replyMessage.senderUserId,
         textMessage = replyMessage.textMessage;
 
-      if (senderUserId && textMessage && this.chatScreens && this.chatScreens[senderUserId]) {
+      if (senderUserId && textMessage) {
       }
     };
 

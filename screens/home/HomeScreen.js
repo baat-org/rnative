@@ -13,14 +13,26 @@ class HomeScreen extends React.Component {
 
     this.state = {
       errorMessage: '',
+      currentUser: {},
       users: [],
+      usersById: {},
       chatMessages: {}
     }
   };
 
   componentDidMount() {
     API.fetchAllUsers().then(users => {
-      this.setState({ users: users });
+      let usersById = {};
+
+      for (let i = 0; i < users.length; i++) {
+        usersById[users[i].id] = users[i];
+      }
+
+      this.setState({ usersById: usersById, users: users });
+    });
+
+    API.getCurrentUser().then(user => {
+      this.setState({ currentUser: user });
     });
 
     this._createWebSocket();
@@ -29,19 +41,14 @@ class HomeScreen extends React.Component {
   _createWebSocket = async () => {
     const ws = new WebSocket(WEBSOCKETS_URI);
     const userToken = await AsyncStorage.getItem('userToken');
+    const that = this;
 
     ws.onmessage = function (event) {
-      const replyMessage = JSON.parse(event.data),
-            senderUserId = replyMessage.senderUserId,
-            textMessage = replyMessage.textMessage;
-      
-      if (senderUserId && textMessage && this.chatScreens && this.chatScreens[senderUserId]) {
-        const message = {senderUserId: senderUserId, textMessage: textMessage};
-        const chatMessages = this.state.chatMessages;
-        const messages = chatMessages[senderUserId] || [];
-        messages.append(message);
-        this.setState({chatMessages});
-      }
+      const message = JSON.parse(event.data),
+        userId = message.senderUserId,
+        textMessage = message.textMessage;
+
+      that.handleReceivedMessage({ userId, textMessage });
     };
 
     ws.onclose = function () {
@@ -55,6 +62,34 @@ class HomeScreen extends React.Component {
     };
   }
 
+  handleReceivedMessage(message) {
+    if (message && message.userId && message.textMessage) {
+      const fromUser = this.state.usersById[message.userId];
+      const textMessage = message.textMessage;
+      const chatMessages = this.state.chatMessages;
+      const messages = chatMessages[message.userId] || [];
+
+      messages.push({ fromUser, textMessage });
+      chatMessages[message.userId] = messages;
+
+      this.setState({ chatMessages });
+    }
+  };
+
+  handleSentMessage(message) {
+    if (message && message.userId && message.textMessage) {
+      const fromUser = this.state.currentUser;
+      const textMessage = message.textMessage;
+      const chatMessages = this.state.chatMessages;
+      const messages = chatMessages[message.userId] || [];
+
+      messages.push({ fromUser, textMessage });
+      chatMessages[message.userId] = messages;
+
+      this.setState({ chatMessages });
+    }
+  };
+
   _signOut() {
     AsyncStorage.clear();
     this.props.navigation.navigate('Auth');
@@ -64,13 +99,13 @@ class HomeScreen extends React.Component {
     this.props.navigation.closeDrawer();
 
     const userId = this.props.navigation.getParam('userId');
-    const fullName = this.props.navigation.getParam('fullName');
+    const headerMessage = 'Hi ' + this.state.currentUser.fullName + ', Chat with ' + this.props.navigation.getParam('fullName');
 
     return (
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
         <Header
           leftComponent={{ icon: 'menu', color: '#fff', onPress: this.props.navigation.toggleDrawer }}
-          centerComponent={{ text: fullName, style: { color: '#fff' } }}
+          centerComponent={{ text: headerMessage, style: { color: '#fff' } }}
           rightComponent={{ text: 'Sign out', style: { color: '#fff' }, onPress: () => this._signOut() }}
         />
         <Text style={GlobalStyles.error}>{this.state.errorMessage}</Text>
@@ -78,7 +113,9 @@ class HomeScreen extends React.Component {
           <ChatScreen
             show={user.id == userId}
             userId={user.id}
-            chatMessages={this.state.chatMessages[user.id]}
+            currentUserId={this.state.currentUser.id}
+            messages={this.state.chatMessages[user.id] || []}
+            onSend={(message) => this.handleSentMessage(message)}
             key={key}
           />)}
       </KeyboardAvoidingView>

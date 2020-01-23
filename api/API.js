@@ -28,6 +28,32 @@ class API {
         return users;
     }
 
+    static getCurrentUser = async () => {
+        const userToken = await AsyncStorage.getItem('userToken');
+        let user;
+
+        await fetch(GQL_API_URI,
+            {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: '{"query": "{ userForToken ( userToken: \\\"' + userToken + '\\\") { id, email, fullName, avatarUrl } }", "variables": null, "operationName":null}',
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson && responseJson.data && responseJson.data.userForToken) {
+                    user = responseJson.data.userForToken;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        return user;
+    }
+
     static authorize = async (userToken, successCallBack, failureCallBack) => {
         fetch(GQL_API_URI,
             {

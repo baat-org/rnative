@@ -9,14 +9,16 @@ class ChatScreen extends React.Component {
     this.state = {
       userId: this.props.userId,
       messageToSend: '',
-      messages: []
     }
   };
 
   onSend() {
     const { userId, messageToSend } = this.state;
     API.chat(userId, messageToSend, () => { }, () => { });
-    this.setState({ messageToSend: '' });
+
+    this.state.messageToSend = '';
+
+    this.props.onSend({ userId: userId, textMessage: messageToSend });
   };
 
   render() {
@@ -24,8 +26,8 @@ class ChatScreen extends React.Component {
       return (
         <Fragment>
           <ScrollView>
-            {this.state.messages.map((message, key) =>
-              <Text>From: {message.senderUserId}, Message: {message.textMessage}</Text>
+            {this.props.messages.map((message, key) =>
+              <Text>From: {message.fromUser.fullName}, Message: {message.textMessage}</Text>
             )}
           </ScrollView>
           <View style={GlobalStyles.chatInputContainer}>
