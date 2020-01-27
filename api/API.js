@@ -55,7 +55,7 @@ class API {
     }
 
     static authorize = async (userToken, successCallBack, failureCallBack) => {
-        fetch(GQL_API_URI,
+        await fetch(GQL_API_URI,
             {
                 method: 'POST',
                 headers: {
@@ -80,7 +80,7 @@ class API {
 
 
     static login = async (userName, password, successCallBack, failureCallBack) => {
-        fetch(GQL_API_URI,
+        await fetch(GQL_API_URI,
             {
                 method: 'POST',
                 headers: {
@@ -102,8 +102,8 @@ class API {
             });
     }
 
-    static signup = async (email, name, successCallBack, failureCallBack) => {
-        fetch(GQL_API_URI,
+    static signup = async (email, name, password, successCallBack, failureCallBack) => {
+        await fetch(GQL_API_URI,
             {
                 method: 'POST',
                 headers: {
@@ -129,7 +129,7 @@ class API {
     static chat = async (recipientUserId, textMessage, successCallBack, failureCallBack) => {
         const userToken = await AsyncStorage.getItem('userToken');
 
-        fetch(GQL_API_URI,
+        await fetch(GQL_API_URI,
             {
                 method: 'POST',
                 headers: {

@@ -20,8 +20,9 @@ class SingupScreen extends React.Component {
 
     API.signup(email, name, password,
       (userToken) => {
-        AsyncStorage.setItem('userToken', userToken);
-        this.props.navigation.navigate('Home');
+        AsyncStorage.setItem('userToken', userToken).then(() => {
+          this.props.navigation.navigate('Home');
+        });
       },
       (error) => {
         this.setState({ errorMessage: error });

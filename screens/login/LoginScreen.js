@@ -19,8 +19,9 @@ class LoginScreen extends React.Component {
 
     API.login(userName, password,
       (userToken) => {
-        AsyncStorage.setItem('userToken', userToken);
-        this.props.navigation.navigate('Home');
+        AsyncStorage.setItem('userToken', userToken).then(() => {
+          this.props.navigation.navigate('Home');
+        });
       },
       (error) => {
         this.setState({ errorMessage: error });
