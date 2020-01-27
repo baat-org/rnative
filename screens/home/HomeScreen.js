@@ -91,13 +91,17 @@ class HomeScreen extends React.Component {
   };
 
   _signOut() {
-    AsyncStorage.clear();
-    this.props.navigation.navigate('Auth');
+    // TODO server side Signout too
+    AsyncStorage.clear().then(() => {
+      this.props.navigation.navigate('Auth');
+    });
+  }
+
+  componentDidUpdate() {
+    this.props.navigation.closeDrawer();
   }
 
   render() {
-    this.props.navigation.closeDrawer();
-
     const userId = this.props.navigation.getParam('userId');
     let headerMessage = 'Welcome ' + this.state.currentUser.fullName + '!';
     if (this.props.navigation.getParam('fullName')) {
