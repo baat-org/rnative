@@ -57,7 +57,6 @@ class SideMenuScreen extends React.Component {
   render() {
     const selectedUserStyle = {},
       userWithUnreadMessageStyle = { fontWeight: 'bold' };
-    console.log(this.state);
     return (
       <SafeAreaView style={GlobalStyles.safeArea}>
         {this.state.users.map((user, key) =>
