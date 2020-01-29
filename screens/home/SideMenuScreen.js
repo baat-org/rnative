@@ -10,8 +10,9 @@ class SideMenuScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      selectedUserId: null,
       users: [],
-      unreadCounts: {}
+      hasUnreadMessage: {}
     }
   };
 
@@ -29,11 +30,10 @@ class SideMenuScreen extends React.Component {
     const that = this;
 
     ws.onmessage = function (event) {
-      const replyMessage = JSON.parse(event.data),
-        senderUserId = replyMessage.senderUserId,
-        textMessage = replyMessage.textMessage;
+      const message = JSON.parse(event.data);
 
-      if (senderUserId && textMessage) {
+      if (message && message.senderUserId && message.textMessage) {
+        that.state.hasUnreadMessage[message.senderUserId] = true;
       }
     };
 
@@ -48,14 +48,25 @@ class SideMenuScreen extends React.Component {
     };
   }
 
+  _onSelectUser(user) {
+    this.state.hasUnreadMessage[user.id] = false;
+    this.state.selectedUserId = user.id;
+    this.props.navigation.navigate('Home', { userId: user.id, fullName: user.fullName })
+  }
+
   render() {
+    const selectedUserStyle = {},
+      userWithUnreadMessageStyle = { fontWeight: 'bold' };
+    console.log(this.state);
     return (
       <SafeAreaView style={GlobalStyles.safeArea}>
         {this.state.users.map((user, key) =>
           <ListItem
             key={key}
-            onPress={() => this.props.navigation.navigate('Home', { userId: user.id, fullName: user.fullName })}
+            onPress={() => this._onSelectUser(user)}
             title={user.fullName}
+            titleStyle={this.state.selectedUserId == user.id ? selectedUserStyle : (this.state.hasUnreadMessage[user.id] ? userWithUnreadMessageStyle : {})}
+            chevron
             bottomDivider
           />)}
       </SafeAreaView>
