@@ -35,14 +35,15 @@ export default StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-around',
-        paddingBottom: 10,
+        paddingLeft: 10,
+        paddingBottom: 25,
     },
     chatInput: {
         height: 40,
         width: '80%',
-        borderWidth: 1,
+        borderWidth: 2,
         paddingHorizontal: 10,
-        borderRadius: 3
+        borderRadius: 5
     },
     chatMessageContainer: {
         width: '70%', 
