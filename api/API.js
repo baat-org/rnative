@@ -54,7 +54,8 @@ class API {
         return user;
     }
 
-    static authorize = async (userToken, successCallBack, failureCallBack) => {
+    static authorize = async (userToken) => {
+        let authorized = false;
         await fetch(GQL_API_URI,
             {
                 method: 'POST',
@@ -67,15 +68,13 @@ class API {
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson && responseJson.data && responseJson.data.validateUserToken) {
-                    successCallBack(responseJson.data.validateUserToken);
-                } else {
-                    failureCallBack();
+                    authorized = true;
                 }
             })
             .catch((error) => {
                 console.log(error);
-                failureCallBack();
             });
+        return authorized;
     }
 
 

@@ -64,6 +64,7 @@ class SideMenuScreen extends React.Component {
             key={key}
             onPress={() => this._onSelectUser(user)}
             title={user.fullName}
+            leftAvatar={{ icon: { name: 'user', type: 'font-awesome' }, containerStyle: {marginRight: 1} }}
             titleStyle={this.state.selectedUserId == user.id ? selectedUserStyle : (this.state.hasUnreadMessage[user.id] ? userWithUnreadMessageStyle : {})}
             chevron
             bottomDivider

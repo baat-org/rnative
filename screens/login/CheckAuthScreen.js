@@ -18,15 +18,11 @@ class CheckAuthScreen extends React.Component {
         if (!userToken) {
             this.props.navigation.navigate('Auth');
         } else {
-            API.authorize(userToken,
-                (userToken) => {
-                    AsyncStorage.setItem('userToken', userToken).then(() => {
-                        this.props.navigation.navigate('Home');
-                    });
-                },
-                () => {
-                    this.props.navigation.navigate('Auth');
-                })
+            if (await API.authorize(userToken)) {
+                this.props.navigation.navigate('Home');
+            } else {
+                this.props.navigation.navigate('Auth');
+            }
         }
     };
 
