@@ -36,6 +36,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-around',
         paddingLeft: 10,
+        paddingTop: 10,
         paddingBottom: 25,
     },
     chatInput: {
@@ -47,7 +48,7 @@ export default StyleSheet.create({
     },
     chatMessageContainer: {
         width: '70%', 
-        paddingBottom: 3, 
+        paddingBottom: 2, 
         paddingLeft: 20
     },
     chatMessageFrom: {

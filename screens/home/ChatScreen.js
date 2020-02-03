@@ -25,7 +25,11 @@ class ChatScreen extends React.Component {
     if (this.props.show) {
       return (
         <Fragment>
-          <ScrollView>
+          <ScrollView
+            ref={ref => this.scrollView = ref}
+            onContentSizeChange={(contentWidth, contentHeight) => {
+              this.scrollView.scrollToEnd({ animated: true });
+            }}>
             {this.props.messages.map((message, key) =>
               <View style={GlobalStyles.chatMessageContainer} key={key}>
                 <Text style={GlobalStyles.chatMessageFrom}>{message.fromUser.fullName}:</Text>
