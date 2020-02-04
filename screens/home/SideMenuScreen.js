@@ -8,7 +8,7 @@ import { AsyncStorage } from 'react-native';
 
 class SideMenuScreen extends React.Component {
   constructor(props) {
-    super(props);
+    super(props); 
     this.state = {
       selectedUserId: null,
       users: [],

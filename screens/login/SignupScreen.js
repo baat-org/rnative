@@ -9,7 +9,7 @@ class SingupScreen extends React.Component {
 
     this.state = {
       email: '',
-      name: '',
+      name: '', 
       password: '',
       errorMessage: '',
     }

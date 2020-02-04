@@ -2,7 +2,7 @@ import { AsyncStorage } from "react-native";
 import { GQL_API_URI } from 'react-native-dotenv';
 
 class API {
-    static fetchAllUsers = async () => {
+    static fetchAllUsers = async () => { 
         const userToken = await AsyncStorage.getItem('userToken');
         let users = [];
 

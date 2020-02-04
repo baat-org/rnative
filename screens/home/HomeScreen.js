@@ -9,7 +9,7 @@ import { WEBSOCKETS_URI } from 'react-native-dotenv';
 
 class HomeScreen extends React.Component {
   constructor(props) {
-    super(props);
+    super(props); 
 
     this.state = {
       errorMessage: '',

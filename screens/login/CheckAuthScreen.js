@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import API from '../../api/API';
 
-class CheckAuthScreen extends React.Component {
+class CheckAuthScreen extends React.Component { 
     componentDidMount() {
         this._authorize();
     }

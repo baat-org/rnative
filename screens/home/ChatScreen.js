@@ -8,7 +8,7 @@ class ChatScreen extends React.Component {
     super(props);
     this.state = {
       userId: this.props.userId,
-      messageToSend: '',
+      messageToSend: '', 
     }
   };
 

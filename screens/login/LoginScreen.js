@@ -12,7 +12,7 @@ class LoginScreen extends React.Component {
       password: '',
       errorMessage: '',
     }
-  };
+  }; 
 
   onLogin() {
     const { userName, password } = this.state;
