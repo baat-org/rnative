@@ -9,7 +9,7 @@ import { WEBSOCKETS_URI } from 'react-native-dotenv';
 
 class HomeScreen extends React.Component {
   constructor(props) {
-    super(props); 
+    super(props);
 
     this.state = {
       errorMessage: '',
@@ -103,7 +103,10 @@ class HomeScreen extends React.Component {
 
   render() {
     const userId = this.props.navigation.getParam('userId');
-    let headerMessage = 'Welcome ' + this.state.currentUser.fullName + '!';
+    let headerMessage = '';
+    if (this.state.currentUser.fullName) {
+      headerMessage = 'Welcome ' + this.state.currentUser.fullName + '!';
+    }
     if (this.props.navigation.getParam('fullName')) {
       headerMessage += ' Chat with ' + this.props.navigation.getParam('fullName');
     }

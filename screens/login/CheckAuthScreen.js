@@ -6,6 +6,7 @@ import {
     View,
 } from 'react-native';
 import API from '../../api/API';
+import GlobalStyles from '../../GlobalStyles';
 
 class CheckAuthScreen extends React.Component { 
     componentDidMount() {
@@ -29,9 +30,8 @@ class CheckAuthScreen extends React.Component {
     // Render any loading content that you like here
     render() {
         return (
-            <View>
-                <ActivityIndicator />
-                <StatusBar barStyle="default" />
+            <View style={GlobalStyles.container}>
+                <ActivityIndicator size="large" />
             </View>
         );
     }
