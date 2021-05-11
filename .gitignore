@@ -12,3 +12,9 @@ web-report/
 
 # macOS
 .DS_Store
+
+.idea/
+*.iml
+.classpath
+.project
+.settings
