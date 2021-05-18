@@ -8,6 +8,11 @@ Must Install Node 10 LTS & Expo
 npm install -g expo-cli
 ```
 
+Install dependencies
+```
+npm install
+```
+
 ## Run Server Locally
 Run Server and Package manager locally and point to the local QR code from device (Expo App).
 
