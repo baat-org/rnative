@@ -44,3 +44,8 @@ For web:
 ```
 expo build:web
 ```
+
+## Screenshots
+
+<img width="1280" alt="Screenshot 2021-05-19 at 23 29 08" src="https://user-images.githubusercontent.com/12097639/118893298-1a72d480-b8fa-11eb-9a0c-3ffdb0317232.png">
+
