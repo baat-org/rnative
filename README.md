@@ -9,6 +9,11 @@ npm install -g expo-cli
 npm install
 ```
 
+Install dependencies
+```
+npm install
+```
+
 ## Run Server Locally
 Run Server and Package manager locally and point to the local QR code from device (Expo App).
 
@@ -42,4 +47,10 @@ expo build:web
 ```
 
 ## Environment setup
+
 Staging/Production [TODO](https://alxmrtnz.com/thoughts/2019/03/12/environment-variables-and-workflow-in-expo.html)
+
+## Screenshots
+
+<img width="1280" alt="Screenshot 2021-05-19 at 23 29 08" src="https://user-images.githubusercontent.com/12097639/118893298-1a72d480-b8fa-11eb-9a0c-3ffdb0317232.png">
+
