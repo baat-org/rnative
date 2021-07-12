@@ -1,12 +1,13 @@
 import { AsyncStorage } from "react-native";
-import { GQL_API_URI } from 'react-native-dotenv';
+import getEnvVars from '../environment';
+const { gqlApiUri } = getEnvVars();
 
 class API {
     static fetchAllUsers = async () => { 
         const userToken = await AsyncStorage.getItem('userToken');
         let users = [];
 
-        await fetch(GQL_API_URI,
+        await fetch(gqlApiUri,
             {
                 method: 'POST',
                 headers: {
@@ -32,7 +33,7 @@ class API {
         const userToken = await AsyncStorage.getItem('userToken');
         let user;
 
-        await fetch(GQL_API_URI,
+        await fetch(gqlApiUri,
             {
                 method: 'POST',
                 headers: {
@@ -56,7 +57,7 @@ class API {
 
     static authorize = async (userToken) => {
         let authorized = false;
-        await fetch(GQL_API_URI,
+        await fetch(gqlApiUri,
             {
                 method: 'POST',
                 headers: {
@@ -79,7 +80,7 @@ class API {
 
 
     static login = async (userName, password, successCallBack, failureCallBack) => {
-        await fetch(GQL_API_URI,
+        await fetch(gqlApiUri,
             {
                 method: 'POST',
                 headers: {
@@ -102,7 +103,7 @@ class API {
     }
 
     static signup = async (email, name, password, successCallBack, failureCallBack) => {
-        await fetch(GQL_API_URI,
+        await fetch(gqlApiUri,
             {
                 method: 'POST',
                 headers: {
@@ -128,7 +129,7 @@ class API {
     static chat = async (recipientUserId, textMessage, successCallBack, failureCallBack) => {
         const userToken = await AsyncStorage.getItem('userToken');
 
-        await fetch(GQL_API_URI,
+        await fetch(gqlApiUri,
             {
                 method: 'POST',
                 headers: {

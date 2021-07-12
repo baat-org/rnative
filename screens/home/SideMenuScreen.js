@@ -3,8 +3,9 @@ import { SafeAreaView } from 'react-navigation';
 import GlobalStyles from '../../GlobalStyles'
 import { ListItem } from 'react-native-elements';
 import API from '../../api/API';
-import { WEBSOCKETS_URI } from 'react-native-dotenv';
 import { AsyncStorage } from 'react-native';
+import getEnvVars from '../../environment';
+const { websocketsUri } = getEnvVars();
 
 class SideMenuScreen extends React.Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class SideMenuScreen extends React.Component {
   }
 
   _createWebSocket = async () => {
-    const ws = new WebSocket(WEBSOCKETS_URI);
+    const ws = new WebSocket(websocketsUri);
     const userToken = await AsyncStorage.getItem('userToken');
     const that = this;
 

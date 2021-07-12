@@ -5,7 +5,8 @@ import GlobalStyles from '../../GlobalStyles';
 import { KeyboardAvoidingView } from 'react-native';
 import ChatScreen from './ChatScreen';
 import API from '../../api/API';
-import { WEBSOCKETS_URI } from 'react-native-dotenv';
+import getEnvVars from '../../environment';
+const { websocketsUri } = getEnvVars();
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -39,7 +40,7 @@ class HomeScreen extends React.Component {
   }
 
   _createWebSocket = async () => {
-    const ws = new WebSocket(WEBSOCKETS_URI);
+    const ws = new WebSocket(websocketsUri);
     const userToken = await AsyncStorage.getItem('userToken');
     const that = this;
 

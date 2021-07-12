@@ -6,6 +6,7 @@ Must Install Node 10 LTS & Expo
 
 ```
 npm install -g expo-cli
+npm install
 ```
 
 ## Run Server Locally
@@ -39,3 +40,6 @@ For web:
 ```
 expo build:web
 ```
+
+## Environment setup
+Staging/Production [TODO](https://alxmrtnz.com/thoughts/2019/03/12/environment-variables-and-workflow-in-expo.html)
