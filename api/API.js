@@ -64,11 +64,11 @@ class API {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
                 },
-                body: '{"query": "mutation { validateUserToken ( userToken: \\\"' + userToken + '\\\")}", "variables": null}',
+                body: '{"query": "mutation { authorize ( userToken: \\\"' + userToken + '\\\")}", "variables": null}',
             })
             .then((response) => response.json())
             .then((responseJson) => {
-                if (responseJson && responseJson.data && responseJson.data.validateUserToken) {
+                if (responseJson && responseJson.data && responseJson.data.authorize) {
                     authorized = true;
                 }
             })
