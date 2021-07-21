@@ -2,9 +2,9 @@ import Constants from "expo-constants";
 import { Platform } from "react-native";
 
 const localhostGql =
- Platform.OS === "ios" ? "http://localhost:8081/graphql" : "http://10.0.2.2:8081/graphql";
+ Platform.OS === "android" ? "http://10.0.2.2:8081/graphql" : "http://localhost:8081/graphql";
 const localhostWs =
- Platform.OS === "ios" ? "ws://localhost:8082/websockets" : "ws://10.0.2.2:8082/websockets";
+ Platform.OS === "android" ? "ws://10.0.2.2:8082/websockets" : "ws://localhost:8082/websockets";
 
 const ENV = {
     dev: {
