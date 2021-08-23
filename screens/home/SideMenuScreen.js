@@ -9,17 +9,24 @@ const { websocketsUri } = getEnvVars();
 
 class SideMenuScreen extends React.Component {
   constructor(props) {
-    super(props); 
+    super(props);
     this.state = {
-      selectedUserId: null,
-      users: [],
-      hasUnreadMessage: {}
+      selectedDirectUserId: null,
+      selectedChannelId: null,
+      directUsers: [],
+      channels: [],
+      hasUnreadMessageForChannel: {},
+      hasUnreadMessageForDirectUser: {}
     }
   };
 
   componentDidMount() {
-    API.fetchAllUsers().then(users => {
-      this.setState({ users: users });
+    API.getDirectsForCurrentUser().then(users => {
+      this.setState({ directUsers: users });
+    });
+
+    API.getChannelsForCurrentUser().then(channels => {
+      this.setState({ channels: channels });
     });
 
     this._createWebSocket();
@@ -33,8 +40,12 @@ class SideMenuScreen extends React.Component {
     ws.onmessage = function (event) {
       const message = JSON.parse(event.data);
 
-      if (message && message.senderUserId && message.textMessage) {
-        that.state.hasUnreadMessage[message.senderUserId] = true;
+      if (message && message.textMessage) {
+        if (message.recipientChannelId) {
+          that.state.hasUnreadMessageForChannel[message.recipientChannelId] = true;
+        } else if (message.senderUserId) {
+          that.state.hasUnreadMessageForDirectUser[message.senderUserId] = true;
+        }
       }
     };
 
@@ -49,24 +60,50 @@ class SideMenuScreen extends React.Component {
     };
   }
 
-  _onSelectUser(user) {
-    this.state.hasUnreadMessage[user.id] = false;
-    this.state.selectedUserId = user.id;
-    this.props.navigation.navigate('Home', { userId: user.id, fullName: user.fullName })
+  _onSelectDirectUser(user) {
+    this.state.hasUnreadMessageForDirectUser[user.id] = false;
+    this.state.selectedDirectUserId = user.id;
+    this.props.navigation.navigate('Home', { directUserId: user.id, directUserFullName: user.fullName, channelId: null, channelName: null })
+  }
+
+  _onSelectChannel(channel) {
+    this.state.hasUnreadMessageForChannel[channel.id] = false;
+    this.state.selectedChannelId = channel.id;
+    this.props.navigation.navigate('Home', { directUserId: null, directUserFullName: null, channelId: channel.id, channelName: channel.name })
   }
 
   render() {
-    const selectedUserStyle = {},
-      userWithUnreadMessageStyle = { fontWeight: 'bold' };
+    // TODO Add avatar support
+
+    const selectedStyle = {},
+      unreadStyle = { fontWeight: 'bold' };
     return (
       <SafeAreaView style={GlobalStyles.safeArea}>
-        {this.state.users.map((user, key) =>
           <ListItem
-            key={key}
-            onPress={() => this._onSelectUser(user)}
+            title="Directs"
+            bottomDivider
+          />
+        {this.state.directUsers.map((user, key) =>
+          <ListItem
+            key={'user-side-menu-' + key}
+            onPress={() => this._onSelectDirectUser(user)}
             title={user.fullName}
-            leftAvatar={{ icon: { name: 'user', type: 'font-awesome' }, containerStyle: {marginRight: 1} }}
-            titleStyle={this.state.selectedUserId == user.id ? selectedUserStyle : (this.state.hasUnreadMessage[user.id] ? userWithUnreadMessageStyle : {})}
+            // leftAvatar={{ icon: { name: 'user', type: 'font-awesome' }, containerStyle: { marginRight: 1 } }}
+            titleStyle={this.state.selectedDirectUserId == user.id ? selectedStyle : (this.state.hasUnreadMessageForDirectUser[user.id] ? unreadStyle : {})}
+            chevron
+            bottomDivider
+          />)}
+          <ListItem
+            title="Channels"
+            bottomDivider
+          />
+        {this.state.channels.map((channel, key) =>
+          <ListItem
+            key={'channel-side-menu-' + key}
+            onPress={() => this._onSelectChannel(channel)}
+            title={channel.name}
+            // leftAvatar={{ icon: { name: 'user', type: 'font-awesome' }, containerStyle: { marginRight: 1 } }}
+            titleStyle={this.state.selectedChannelId == channel.id ? selectedStyle : (this.state.hasUnreadMessageForChannel[channel.id] ? unreadStyle : {})}
             chevron
             bottomDivider
           />)}

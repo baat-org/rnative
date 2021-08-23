@@ -3,32 +3,6 @@ import getEnvVars from '../environment';
 const { gqlApiUri } = getEnvVars();
 
 class API {
-    static fetchAllUsers = async () => { 
-        const userToken = await AsyncStorage.getItem('userToken');
-        let users = [];
-
-        await fetch(gqlApiUri,
-            {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: '{"query": "{ users ( userToken: \\\"' + userToken + '\\\") { id, email, fullName, avatarUrl } }", "variables": null, "operationName":null}',
-            })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                if (responseJson && responseJson.data && responseJson.data.users) {
-                    users = responseJson.data.users;
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-
-        return users;
-    }
-
     static getCurrentUser = async () => {
         const userToken = await AsyncStorage.getItem('userToken');
         let user;
@@ -126,7 +100,7 @@ class API {
     }
 
 
-    static chat = async (recipientUserId, textMessage, successCallBack, failureCallBack) => {
+    static chat = async (recipientChannelId, recipientUserId, textMessage, successCallBack, failureCallBack) => {
         const userToken = await AsyncStorage.getItem('userToken');
 
         await fetch(gqlApiUri,
@@ -136,7 +110,7 @@ class API {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
                 },
-                body: '{"query": "mutation { chat ( senderUserToken: \\\"' + userToken + '\\\", recipientUserId: ' + recipientUserId + ', textMessage: \\\"' + textMessage + '\\\")}", "variables": null}',
+                body: '{"query": "mutation { chat ( senderUserToken: \\\"' + userToken + '\\\", recipientUserId: ' + recipientUserId + ', recipientChannelId: ' + recipientChannelId + ', textMessage: \\\"' + textMessage + '\\\")}", "variables": null}',
             })
             .then((response) => response.json())
             .then((responseJson) => {
@@ -149,6 +123,110 @@ class API {
             .catch((error) => {
                 failureCallBack(error);
             });
+    }
+
+    static fetchAllChannels = async () => { 
+        const userToken = await AsyncStorage.getItem('userToken');
+        let channels = [];
+
+        await fetch(gqlApiUri,
+            {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: '{"query": "{ channels ( userToken: \\\"' + userToken + '\\\") { id, name, description, archived } }", "variables": null, "operationName":null}',
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson && responseJson.data && responseJson.data.channels) {
+                    channels = responseJson.data.channels;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        return channels;
+    }
+
+    static getChannelsForCurrentUser = async () => {
+        const userToken = await AsyncStorage.getItem('userToken');
+        let channels = [];
+
+        await fetch(gqlApiUri,
+            {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: '{"query": "{ channelsForUser ( userToken: \\\"' + userToken + '\\\") { id, name, description, archived } }", "variables": null, "operationName":null}',
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson && responseJson.data && responseJson.data.channelsForUser) {
+                    channels = responseJson.data.channelsForUser;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        return channels;
+    }
+
+    static fetchAllUsers = async () => { 
+        const userToken = await AsyncStorage.getItem('userToken');
+        let users = [];
+
+        await fetch(gqlApiUri,
+            {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: '{"query": "{ users ( userToken: \\\"' + userToken + '\\\") { id, email, fullName, avatarUrl } }", "variables": null, "operationName":null}',
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson && responseJson.data && responseJson.data.users) {
+                    users = responseJson.data.users;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        return users;
+    }
+
+    static getDirectsForCurrentUser = async () => { 
+        const userToken = await AsyncStorage.getItem('userToken');
+        let users = [];
+
+        await fetch(gqlApiUri,
+            {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: '{"query": "{ directsForUser ( userToken: \\\"' + userToken + '\\\") { id, email, fullName, avatarUrl } }", "variables": null, "operationName":null}',
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson && responseJson.data && responseJson.data.directsForUser) {
+                    users = responseJson.data.directsForUser;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        return users;
     }
 
 }

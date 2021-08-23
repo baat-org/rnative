@@ -15,9 +15,12 @@ class HomeScreen extends React.Component {
     this.state = {
       errorMessage: '',
       currentUser: {},
-      users: [],
-      usersById: {},
-      chatMessages: {}
+      allUsers: [],
+      allUsersById: [],
+      directUsers: [],
+      directChatMessages: {},
+      channels: [],
+      channelChatMessages: {}
     }
   };
 
@@ -29,7 +32,15 @@ class HomeScreen extends React.Component {
         usersById[users[i].id] = users[i];
       }
 
-      this.setState({ usersById: usersById, users: users });
+      this.setState({ allUsersById: usersById, allUsers: users });
+    });
+
+    API.getDirectsForCurrentUser().then(users => {
+      this.setState({ directUsers: users });
+    });
+
+    API.getChannelsForCurrentUser().then(channels => {
+      this.setState({ channels: channels });
     });
 
     API.getCurrentUser().then(user => {
@@ -46,10 +57,11 @@ class HomeScreen extends React.Component {
 
     ws.onmessage = function (event) {
       const message = JSON.parse(event.data),
-        userId = message.senderUserId,
+        senderUserId = message.senderUserId,
+        recipientChannelId = message.recipientChannelId,
         textMessage = message.textMessage;
 
-      that.handleReceivedMessage({ userId, textMessage });
+      that.handleReceivedMessage({ senderUserId, recipientChannelId, textMessage });
     };
 
     ws.onclose = function () {
@@ -64,30 +76,54 @@ class HomeScreen extends React.Component {
   }
 
   handleReceivedMessage(message) {
-    if (message && message.userId && message.textMessage) {
-      const fromUser = this.state.usersById[message.userId];
-      const textMessage = message.textMessage;
-      const chatMessages = this.state.chatMessages;
-      const messages = chatMessages[message.userId] || [];
+    if (message && message.textMessage) {
+      if (message.recipientChannelId && message.senderUserId) {
+        const fromUser = this.state.allUsersById[message.senderUserId];
+        const textMessage = message.textMessage;
+        const channelChatMessages = this.state.channelChatMessages;
+        const messages = channelChatMessages[message.recipientChannelId] || [];
 
-      messages.push({ fromUser, textMessage });
-      chatMessages[message.userId] = messages;
+        messages.push({ fromUser, textMessage });
+        channelChatMessages[message.recipientChannelId] = messages;
 
-      this.setState({ chatMessages });
+        this.setState({ channelChatMessages });
+      } else if (message.senderUserId) {
+        const fromUser = this.state.allUsersById[message.senderUserId];
+        const textMessage = message.textMessage;
+        const directChatMessages = this.state.directChatMessages;
+        const messages = directChatMessages[message.senderUserId] || [];
+
+        messages.push({ fromUser, textMessage });
+        directChatMessages[message.senderUserId] = messages;
+
+        this.setState({ directChatMessages });
+      }
     }
   };
 
   handleSentMessage(message) {
-    if (message && message.userId && message.textMessage) {
-      const fromUser = this.state.currentUser;
-      const textMessage = message.textMessage;
-      const chatMessages = this.state.chatMessages;
-      const messages = chatMessages[message.userId] || [];
+    if (message && message.textMessage) {
+      if (message.channelId) {
+        const fromUser = this.state.currentUser;
+        const textMessage = message.textMessage;
+        const channelChatMessages = this.state.channelChatMessages;
+        const messages = channelChatMessages[message.channelId] || [];
 
-      messages.push({ fromUser, textMessage });
-      chatMessages[message.userId] = messages;
+        messages.push({ fromUser, textMessage });
+        channelChatMessages[message.recipientChannelId] = messages;
 
-      this.setState({ chatMessages });
+        this.setState({ channelChatMessages });
+      } else if (message.directUserId) {
+        const fromUser = this.state.currentUser;
+        const textMessage = message.textMessage;
+        const directChatMessages = this.state.directChatMessages;
+        const messages = directChatMessages[message.directUserId] || [];
+
+        messages.push({ fromUser, textMessage });
+        directChatMessages[message.directUserId] = messages;
+
+        this.setState({ directChatMessages });
+      }
     }
   };
 
@@ -103,15 +139,20 @@ class HomeScreen extends React.Component {
   }
 
   render() {
-    const userId = this.props.navigation.getParam('userId');
+    const directUserId = this.props.navigation.getParam('directUserId');
+    const directUserFullName = this.props.navigation.getParam('directUserFullName');
+    const channelId = this.props.navigation.getParam('channelId');
+    const channelName = this.props.navigation.getParam('channelName');
+
     let headerMessage = '';
     if (this.state.currentUser.fullName) {
       headerMessage = 'Welcome ' + this.state.currentUser.fullName + '!';
     }
-    if (this.props.navigation.getParam('fullName')) {
-      headerMessage += ' Chat with ' + this.props.navigation.getParam('fullName');
+    if (channelName) {
+      headerMessage += ' Chat in Channel  ' + channelName;
+    } else if (directUserFullName) {
+      headerMessage += ' Chat with ' + directUserFullName;
     }
-
 
     return (
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
@@ -121,14 +162,25 @@ class HomeScreen extends React.Component {
           rightComponent={{ text: 'Sign out', style: { color: '#fff' }, onPress: () => this._signOut() }}
         />
         <Text style={GlobalStyles.error}>{this.state.errorMessage}</Text>
-        {this.state.users.map((user, key) =>
+        {this.state.directUsers.map((user, key) =>
           <ChatScreen
-            show={user.id == userId}
-            userId={user.id}
+            show={user.id == directUserId}
+            directUserId={user.id}
+            channelId={null}
             currentUserId={this.state.currentUser.id}
-            messages={this.state.chatMessages[user.id] || []}
+            messages={this.state.directChatMessages[user.id] || []}
             onSend={(message) => this.handleSentMessage(message)}
-            key={key}
+            key={'user-chat-' + key}
+          />)}
+        {this.state.channels.map((channel, key) =>
+          <ChatScreen
+            show={channel.id == channelId}
+            directUserId={null}
+            channelId={channel.id}
+            currentUserId={this.state.currentUser.id}
+            messages={this.state.channelChatMessages[channel.id] || []}
+            onSend={(message) => this.handleSentMessage(message)}
+            key={'channel-chat-' + key}
           />)}
       </KeyboardAvoidingView>
     );

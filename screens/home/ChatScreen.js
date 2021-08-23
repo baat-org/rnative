@@ -7,18 +7,20 @@ class ChatScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userId: this.props.userId,
+      show: false,
+      directUserId: this.props.directUserId,
+      channelId: this.props.channelId,
       messageToSend: '', 
     }
   };
 
   onSend() {
-    const { userId, messageToSend } = this.state;
-    API.chat(userId, messageToSend, () => { }, () => { });
+    const { channelId, directUserId, messageToSend } = this.state;
+    API.chat(channelId, directUserId, messageToSend, () => { }, () => { });
 
     this.state.messageToSend = '';
 
-    this.props.onSend({ userId: userId, textMessage: messageToSend });
+    this.props.onSend({ channelId: channelId, directUserId: directUserId, textMessage: messageToSend });
   };
 
   render() {
