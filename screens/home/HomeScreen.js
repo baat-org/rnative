@@ -59,9 +59,10 @@ class HomeScreen extends React.Component {
       const message = JSON.parse(event.data),
         senderUserId = message.senderUserId,
         recipientChannelId = message.recipientChannelId,
+        recipientUserId = message.recipientUserId,
         textMessage = message.textMessage;
 
-      that.handleReceivedMessage({ senderUserId, recipientChannelId, textMessage });
+      that.handleReceivedMessage({ senderUserId, recipientChannelId, recipientUserId, textMessage });
     };
 
     ws.onclose = function () {
@@ -87,44 +88,28 @@ class HomeScreen extends React.Component {
         channelChatMessages[message.recipientChannelId] = messages;
 
         this.setState({ channelChatMessages });
-      } else if (message.senderUserId) {
+      } else if (message.recipientUserId && message.senderUserId) {
         const fromUser = this.state.allUsersById[message.senderUserId];
         const textMessage = message.textMessage;
         const directChatMessages = this.state.directChatMessages;
-        const messages = directChatMessages[message.senderUserId] || [];
 
-        messages.push({ fromUser, textMessage });
-        directChatMessages[message.senderUserId] = messages;
-
-        this.setState({ directChatMessages });
+        if (this.state.currentUser.id == message.senderUserId) {
+          const messages = directChatMessages[message.recipientUserId] || [];  
+          messages.push({ fromUser, textMessage });
+          directChatMessages[message.recipientUserId] = messages;
+          this.setState({ directChatMessages });
+        } else {
+            const messages = directChatMessages[message.senderUserId] || [];  
+            messages.push({ fromUser, textMessage });
+            directChatMessages[message.senderUserId] = messages;
+            this.setState({ directChatMessages });  
+        }
       }
     }
   };
 
   handleSentMessage(message) {
-    if (message && message.textMessage) {
-      if (message.channelId) {
-        const fromUser = this.state.currentUser;
-        const textMessage = message.textMessage;
-        const channelChatMessages = this.state.channelChatMessages;
-        const messages = channelChatMessages[message.channelId] || [];
-
-        messages.push({ fromUser, textMessage });
-        channelChatMessages[message.recipientChannelId] = messages;
-
-        this.setState({ channelChatMessages });
-      } else if (message.directUserId) {
-        const fromUser = this.state.currentUser;
-        const textMessage = message.textMessage;
-        const directChatMessages = this.state.directChatMessages;
-        const messages = directChatMessages[message.directUserId] || [];
-
-        messages.push({ fromUser, textMessage });
-        directChatMessages[message.directUserId] = messages;
-
-        this.setState({ directChatMessages });
-      }
-    }
+    // do nothing
   };
 
   _signOut() {
@@ -145,6 +130,10 @@ class HomeScreen extends React.Component {
     const channelName = this.props.navigation.getParam('channelName');
 
     let headerMessage = '';
+    if (!this.state.currentUser) {
+      this.props.navigation.navigate('Auth');
+    }
+
     if (this.state.currentUser.fullName) {
       headerMessage = 'Welcome ' + this.state.currentUser.fullName + '!';
     }

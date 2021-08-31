@@ -42,9 +42,13 @@ class SideMenuScreen extends React.Component {
 
       if (message && message.textMessage) {
         if (message.recipientChannelId) {
-          that.state.hasUnreadMessageForChannel[message.recipientChannelId] = true;
+          if (message.recipientChannelId != that.state.selectedChannelId) {
+            that.state.hasUnreadMessageForChannel[message.recipientChannelId] = true;
+          }
         } else if (message.senderUserId) {
-          that.state.hasUnreadMessageForDirectUser[message.senderUserId] = true;
+          if (message.senderUserId != that.state.selectedDirectUserId) {
+            that.state.hasUnreadMessageForDirectUser[message.senderUserId] = true;
+          }
         }
       }
     };
