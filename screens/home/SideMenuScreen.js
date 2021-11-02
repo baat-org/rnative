@@ -70,6 +70,10 @@ class SideMenuScreen extends React.Component {
     this.props.navigation.navigate('Home', { directUserId: user.id, directUserFullName: user.fullName, channelId: null, channelName: null })
   }
 
+  _onAddDirectUser() {
+    this.props.navigation.navigate('Directs');
+  }
+
   _onSelectChannel(channel) {
     this.state.hasUnreadMessageForChannel[channel.id] = false;
     this.state.selectedChannelId = channel.id;
@@ -85,6 +89,11 @@ class SideMenuScreen extends React.Component {
       <SafeAreaView style={GlobalStyles.safeArea}>
           <ListItem
             title="Directs"
+            bottomDivider
+          />
+          <ListItem
+            title="Add Direct"
+            onPress={() => this._onAddDirectUser()}
             bottomDivider
           />
         {this.state.directUsers.map((user, key) =>

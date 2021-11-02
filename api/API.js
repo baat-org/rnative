@@ -229,6 +229,58 @@ class API {
         return users;
     }
 
+    static createDirect = async (userId) => { 
+        const userToken = await AsyncStorage.getItem('userToken');
+        let success = false;
+
+        await fetch(gqlApiUri,
+            {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: '{"query": "mutation { createDirect ( userToken: \\\"' + userToken + '\\\", secondUserId: ' + userId + ') }", "variables": null}',
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson && responseJson.data && responseJson.data.createDirect) {
+                    success = true;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        return success;
+    }
+
+    static removeDirect = async (userId) => { 
+        const userToken = await AsyncStorage.getItem('userToken');
+        let success = false;
+
+        await fetch(gqlApiUri,
+            {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: '{"query": "mutation { removeDirect ( userToken: \\\"' + userToken + '\\\", secondUserId: ' + userId + ') }", "variables": null}',
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson && responseJson.data && responseJson.data.removeDirect) {
+                    success = true;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        return success;
+    }
+
 }
 
 export default API
