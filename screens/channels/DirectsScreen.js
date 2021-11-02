@@ -11,18 +11,21 @@ class DirectsScreen extends React.Component {
     this.state = {
       users: [],
     }
-  }; 
+  };
 
   _onSelectUser(user) {
-    API.createDirect(user.id);
-    this.props.navigation.navigate('Home', { directUserId: user.id, directUserFullName: user.fullName, channelId: null, channelName: null })
+    API.createDirect(user.id).then(success => {
+      if (success) {
+        this.props.navigation.navigate('Home', { directUserId: user.id, directUserFullName: user.fullName, channelId: null, channelName: null });
+      }
+    });
   }
 
   componentDidMount() {
     API.fetchAllUsers().then(users => {
       API.getDirectsForCurrentUser().then(directUsers => {
-        let filteredUsers = users.filter( user => {
-            return !directUsers.find(directUser => directUser.id == user.id)
+        let filteredUsers = users.filter(user => {
+          return !directUsers.find(directUser => directUser.id == user.id)
         });
         this.setState({ users: filteredUsers });
       });
@@ -33,10 +36,10 @@ class DirectsScreen extends React.Component {
     const selectedStyle = {};
     return (
       <SafeAreaView style={GlobalStyles.safeArea}>
-          <ListItem
-            title="Add Directs"
-            bottomDivider
-          />
+        <ListItem
+          title="Add Directs"
+          bottomDivider
+        />
         {this.state.users.map((user, key) =>
           <ListItem
             key={'add-user-menu-' + key}
