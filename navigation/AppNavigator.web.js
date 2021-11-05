@@ -8,6 +8,8 @@ import LoginScreen from '../screens/login/LoginScreen'
 import SignupScreen from '../screens/login/SignupScreen'
 import HomeScreen from '../screens/home/HomeScreen'
 import SideMenuScreen from '../screens/home/SideMenuScreen'
+import DirectsScreen from '../screens/channels/DirectsScreen'
+import ChannelsScreen from '../screens/channels/ChannelsScreen'
 
 const AuthNavigatorStack = createStackNavigator(
   {
@@ -30,7 +32,9 @@ const AppSwitchNavigator = createSwitchNavigator(
     CheckAuth: CheckAuthScreen,
     Home: HomeDrawerNavigator,
     Auth: AuthNavigatorStack,
-  },
+    Directs: DirectsScreen,
+    Channels: ChannelsScreen,
+},
   {
     initialRouteName: 'CheckAuth',
   }
